@@ -1,0 +1,99 @@
+var intentos = 0;
+bool enJuego = false;
+bool execute = true;
+
+Console.WriteLine("Bienvenido a Adivina Tu Número!\n"
+    + "Escriba 'jugar' para iniciar el juego.\n"
+    + "Escriba 'puntaje' para ver su último puntaje.\n"
+    + "Escriba 'help' para ver la lista de comandos.\n"
+    + "Escriba 'exit' para salir del juego.");
+
+while (execute)
+{
+    string? input = Console.ReadLine();
+
+    if (input.Equals("jugar", StringComparison.CurrentCultureIgnoreCase))
+        jugar();
+    else if (input.Equals("puntaje", StringComparison.CurrentCultureIgnoreCase))
+        puntaje();
+    else if (input.Equals("exit", StringComparison.CurrentCultureIgnoreCase))
+        execute = false;
+    else if (input.Equals("help", StringComparison.CurrentCultureIgnoreCase))
+        Console.WriteLine(
+         "Escriba 'jugar' para iniciar el juego.\n"
+       + "Escriba 'puntaje' para ver su último puntaje.\n"
+       + "Escriba 'help' para ver la lista de comandos.\n"
+       + "Escriba 'exit' para salir del juego.");
+    else
+        Console.WriteLine("Comando inexistente. Escriba 'help' para ver los comandos.");
+}
+
+void jugar()
+{
+    Random random = new Random();
+    int numeroSecreto = random.Next(101); // 0 al 100
+    intentos = 0;
+    enJuego = true;
+
+    Console.WriteLine("\n¡Nuevo juego! Adivina el número entre 0 y 100.");
+
+    while (true)
+    {
+        Console.Write("Tu número: ");
+        string entrada = Console.ReadLine();
+
+        if (int.TryParse(entrada, out int numeroUsuario))// Evita errores a la hora de
+        {
+            intentos++;
+
+            if (numeroUsuario == numeroSecreto)
+            {
+                Console.WriteLine("¡Correcto! Has adivinado el número.");
+                break;
+            }
+            else if (numeroUsuario < numeroSecreto)
+            {
+                Console.WriteLine("El número es más alto.");
+            }
+            else
+            {
+                Console.WriteLine("El número es más bajo.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Introduce un número válido entre 0 y 100.");
+        }
+    }
+
+    enJuego = false;
+}
+
+void puntaje()
+{
+    Console.WriteLine("Resultado:");
+
+    if (enJuego)
+    {
+        Console.WriteLine("Aún estás jugando. Termina el juego para ver tu puntaje.");
+        return;
+    }
+
+    switch (intentos)
+    {
+        case 0:
+            Console.WriteLine("Vamos, juguemos!");
+            break;
+        case 1:
+            Console.WriteLine("Imposible, hiciste trampa");
+            break;
+        default:
+            if (intentos < 5)
+                Console.WriteLine("Sos increíble!");
+            else if (intentos < 10)
+                Console.WriteLine("Felicidades,ganaste");
+            else
+                Console.WriteLine("Ya era hora,te tardaste");
+            break;
+    }
+}
